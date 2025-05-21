@@ -1,0 +1,7 @@
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.venv/
+.env
+groups.json  # optional if you don't want to bake existing data into the image

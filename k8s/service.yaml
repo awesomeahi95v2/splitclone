@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: splitclone-service
+spec:
+  type: LoadBalancer
+  selector:
+    app: splitclone
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 5000
