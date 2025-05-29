@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: splitclone-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: splitclone
+  template:
+    metadata:
+      labels:
+        app: splitclone
+    spec:
+      containers:
+      - name: splitclone
+        # image: 395720230803.dkr.ecr.us-east-1.amazonaws.com/splitclone:latest
+        # imagePullPolicy: Always
+        image: splitclone-app:latest
+        imagePullPolicy: Never
+        ports:
+        - containerPort: 5000
