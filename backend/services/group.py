@@ -1,7 +1,7 @@
 from collections import defaultdict
 from decimal import ROUND_HALF_UP, Decimal
 from models import GroupModel
-from backend.db import db
+from db import db
 from models import GroupMembership
 
 class GroupService:

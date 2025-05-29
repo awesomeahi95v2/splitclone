@@ -1,5 +1,5 @@
 from backend.app import app
-from backend.db import db
+from db import db
 from models import UserModel, GroupModel, ExpenseModel, GroupMembership, ExpenseSplit
 
 with app.app_context():

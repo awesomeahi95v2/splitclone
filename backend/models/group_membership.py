@@ -1,5 +1,5 @@
 import uuid
-from backend.db import db
+from db import db
 
 class GroupMembership(db.Model):
     __tablename__ = 'group_memberships'

@@ -1,5 +1,5 @@
 import uuid
-from backend.db import db
+from db import db
 
 class ExpenseSplit(db.Model):
     __tablename__ = 'expense_splits'

@@ -1,6 +1,6 @@
 from models import UserModel
 from models import GroupMembership
-from backend.db import db
+from db import db
 
 class MembershipService:
     @staticmethod

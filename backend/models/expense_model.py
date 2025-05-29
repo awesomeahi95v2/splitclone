@@ -1,5 +1,5 @@
 import uuid
-from backend.db import db
+from db import db
 from sqlalchemy.orm import relationship
 
 class ExpenseModel(db.Model):

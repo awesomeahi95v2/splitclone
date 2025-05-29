@@ -1,5 +1,5 @@
 from models import ExpenseModel, ExpenseSplit
-from backend.db import db
+from db import db
 
 class ExpenseService:
     @staticmethod
