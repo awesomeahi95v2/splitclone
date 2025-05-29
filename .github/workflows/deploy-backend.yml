@@ -1,0 +1,53 @@
+name: Deploy Backend to ECS with Terraform
+
+on:
+  push:
+    paths:
+      - 'backend/**'
+      - 'infra/fargate/**'
+      - '.github/workflows/deploy-backend.yml'
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    env:
+      AWS_REGION: ${{ secrets.AWS_REGION }}
+      ECR_REPO: splitclone
+      ECR_URI: 395720230803.dkr.ecr.us-east-1.amazonaws.com/splitclone
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_REGION }}
+
+      - name: Log in to Amazon ECR
+        uses: aws-actions/amazon-ecr-login@v1
+
+      - name: Build and push Docker image
+        run: |
+          VERSION="$(git rev-parse --short HEAD)-$(date +%s)"
+          IMAGE_URI="$ECR_URI:$VERSION"
+          echo "IMAGE_URI=$IMAGE_URI" >> $GITHUB_ENV
+
+          docker build -t splitclone:$VERSION ./backend
+          docker tag splitclone:$VERSION $IMAGE_URI
+          docker push $IMAGE_URI
+
+      - name: Write Terraform override file
+        run: |
+          echo "docker_image_url = \"${IMAGE_URI}\"" > deploy_version.auto.tfvars
+
+      - name: Deploy with Terraform
+        run: |
+          cd infra/fargate
+          terraform init
+          terraform apply -auto-approve -var-file=../../deploy_version.auto.tfvars
