@@ -32,6 +32,9 @@ jobs:
       - name: Log in to Amazon ECR
         uses: aws-actions/amazon-ecr-login@v1
 
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v2
+
       - name: Build and push Docker image
         run: |
           VERSION="$(git rev-parse --short HEAD)-$(date +%s)"
@@ -51,3 +54,6 @@ jobs:
           cd infra/fargate
           terraform init
           terraform apply -auto-approve -var-file=../../deploy_version.auto.tfvars
+
+      - name: Cleanup override file
+        run: rm -f deploy_version.auto.tfvars
